@@ -3,15 +3,13 @@
 
 source "time-sqlite.tcl"
 
-puts "event date: " 
-gets stdin evtDate
-puts "event location: "
-gets stdin evtLocation
-puts "event people: "
-gets stdin evtPeople
-puts "event notes: "
-gets stdin evtNotes
-puts "event files: "
-gets stdin evtBlobs
+set fh [open ./events.tcld]
+set data [read -nonewline $fh] 
+close $fh
 
-addEvent $evtDate $evtLocation $evtPeople $evtNotes $evtBlobs
+set events [split $data "\n"]
+foreach event $events {
+	addEvent [dict get $event name] [dict get $event date] "" "" "test" ""
+}
+
+# addEvent $evtDate $evtLocation $evtPeople $evtNotes $evtBlobs
