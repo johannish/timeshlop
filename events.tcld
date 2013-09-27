@@ -1,2 +1,2 @@
-name "TCL conference" date 1234567890 people {"John Coulter" "Nathan Coulter"} notes { blah blah blah }
-name "TCL something" date 1111111111 people {"John Coulter" "Nathan Coulter"} notes {}
+name "TCL conference" date 1234567890 people {"John Coulter" "Nathan Coulter"} locations {{name "New Orleans"}} note { blah blah blah }
+name "TCL something" date 1111111111 people {"John Coulter" "Nathan Coulter"} locations {{name "New Orleans"}} note {}

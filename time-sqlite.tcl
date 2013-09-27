@@ -4,8 +4,12 @@ package require sqlite3
 
 sqlite3 db ./timeshlop.db -create true
 
-# Enforce foreign key relationships
-db eval { PRAGMA foreign_keys = ON }
+db eval {
+	-- enforce foreign key relationships
+	PRAGMA foreign_keys = ON;
+	-- make LIKE comparison case sensitive even for ASCII
+	PRAGMA case_sensitive_like = ON;
+}
 
 proc addEvent {name date locations people note attachments} {
 	puts "Inserting: $name | $date | $locations | $people | $note | $attachments"
@@ -24,11 +28,43 @@ proc addEvent {name date locations people note attachments} {
 		set eventId [db eval {
 			SELECT last_insert_rowid()
 		}]
+
+		foreach location $locations {
+			# use dict merge to add default empty keys if missing
+			set location [dict merge {name {} lat {} long {}} $location]
+			puts "location: $location"
+			# TODO is there a more elegant way here to insert the dict values into the row?
+			set name [dict get $location name]
+			set lat [dict get $location lat]
+			set long [dict get $location long]
+			db eval {
+				INSERT INTO location VALUES (
+					null,
+					strftime('%s', 'now'),
+					$eventId,
+					$name,
+					$lat,
+					$long
+				)
+			}
+		}
+
+		foreach fullname $people {
+			db eval {
+				INSERT INTO person VALUES (
+					null,
+					strftime('%s', 'now'),
+					$eventId,
+					$fullname
+				)
+			}
+		}
+
 	}
 }
 
-proc deleteEvent {date locations people note attachments} {
-	puts "Got: $date $locations $people $note $attachments"
+proc deleteEvent {eventId} {
+	puts "Deleting event: $eventId"
 }
 
 proc initDb {} {
