@@ -11,6 +11,13 @@ db eval {
 	PRAGMA case_sensitive_like = ON;
 }
 
+proc getAllEvents {} {
+	db eval {
+		SELECT *
+		FROM event
+	}
+}
+
 proc addEvent {name date locations people note attachments} {
 	puts "Inserting: $name | $date | $locations | $people | $note | $attachments"
 	db transaction {
@@ -129,4 +136,6 @@ proc ensureSchema {} {
 	}
 }
 
-ensureSchema
+proc init_db {} {
+	ensureSchema
+}
