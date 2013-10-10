@@ -39,7 +39,7 @@ proc addEvent {name date locations people note attachments} {
 		foreach location $locations {
 			# use dict merge to add default empty keys if missing
 			set location [dict merge {name {} lat {} long {}} $location]
-			puts "location: $location"
+			puts "using location: $location"
 			# TODO is there a more elegant way here to insert the dict values into the row?
 			set name [dict get $location name]
 			set lat [dict get $location lat]
@@ -68,6 +68,9 @@ proc addEvent {name date locations people note attachments} {
 		}
 
 	}
+
+	# TODO: Make this status reflect db success
+	return true
 }
 
 proc deleteEvent {eventId} {
