@@ -8,7 +8,6 @@ init_db
 
 set events [getAllEvents]
 
-#[import ./events.tcld]
 
 wm title . "Timeshlop"
 wm minsize . 400 200
@@ -26,11 +25,14 @@ grid [ttk::entry .c.importentry -text "File path"] -column 1 -row 0 -sticky n
 grid [ttk::button .c.importbtn -text "Import file" -command importMe] -column 2 -row 0 -sticky n
 grid [ttk::label .c.messages] -column 0 -row 1 -columnspan 2 -sticky ws
 #ttk::style configure TLabel -background blue #DEBUG
-#grid [ttk::sizegrip .c.grip] -column 2 -row 1 -sticky se #TODO Make this non-stationary
+grid [ttk::sizegrip .c.grip] -column 999 -row 1 -sticky se
+
 
 proc importMe {} {
 	set path [.c.importentry get]
 	set importmsg [import $path]
 	.c.messages configure -text $importmsg
-	#TODO Refresh events in listbox
+	#TODO do this without upvar
+	upvar events evts
+	set evts [getAllEvents]
 }
