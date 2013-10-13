@@ -11,14 +11,17 @@ db eval {
 	PRAGMA case_sensitive_like = ON;
 }
 
-proc getAllEvents {} {
+namespace eval ::eventsDb {
+}
+
+proc ::eventsDb::getAllEvents {} {
 	db eval {
 		SELECT *
 		FROM event
 	}
 }
 
-proc addEvent {name date locations people note attachments} {
+proc ::eventsDb::addEvent {name date locations people note attachments} {
 	puts "Inserting: $name | $date | $locations | $people | $note | $attachments"
 	db transaction {
 		db eval {
@@ -73,11 +76,11 @@ proc addEvent {name date locations people note attachments} {
 	return true
 }
 
-proc deleteEvent {eventId} {
+proc ::eventsDb::deleteEvent {eventId} {
 	puts "Deleting event: $eventId"
 }
 
-proc initDb {} {
+proc ::eventsDb::initDb {} {
 	puts "Creating DB tables"
 	db eval {
 		CREATE TABLE IF NOT EXISTS event(
@@ -126,7 +129,7 @@ proc initDb {} {
 	}
 }
 
-proc ensureSchema {} {
+proc ::eventsDb::ensureSchema {} {
 	set expectedCount 5
 	set tableCount [db eval {
 		SELECT count(*)
@@ -139,6 +142,6 @@ proc ensureSchema {} {
 	}
 }
 
-proc init_db {} {
+proc ::eventsDb::init_db {} {
 	ensureSchema
 }

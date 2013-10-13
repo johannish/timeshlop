@@ -2,12 +2,9 @@
 
 package require Tk
 
-source "event_import.tcl"
+source "events.tcl"
 
-init_db
-
-set events [getAllEvents]
-
+set events [::events::getSummaryList]
 
 wm title . "Timeshlop"
 wm minsize . 400 200
@@ -30,9 +27,10 @@ grid [ttk::sizegrip .c.grip] -column 999 -row 1 -sticky se
 
 proc importMe {} {
 	set path [.c.importentry get]
-	set importmsg [import $path]
+	set importmsg [::events::import $path]
 	.c.messages configure -text $importmsg
 	#TODO do this without upvar
 	upvar events evts
-	set evts [getAllEvents]
+	set evts [::events::getSummaryList]
+	.c.eventlb yview moveto 1; # scroll to last item in list
 }
