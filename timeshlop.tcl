@@ -24,6 +24,8 @@ grid [ttk::label .c.messages] -column 0 -row 1 -columnspan 2 -sticky ws
 #ttk::style configure TLabel -background blue #DEBUG
 grid [ttk::sizegrip .c.grip] -column 999 -row 1 -sticky se
 
+bind .c.importentry <Return> importMe
+
 
 proc importMe {} {
 	set path [.c.importentry get]
