@@ -16,7 +16,10 @@ namespace eval ::eventsDb {
 
 proc ::eventsDb::getAllEvents {} {
 	db eval {
-		SELECT *
+		SELECT
+			id,
+			strftime('%Y-%m-%d', date, 'unixepoch'),
+			name
 		FROM event
 	}
 }

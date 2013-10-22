@@ -14,7 +14,14 @@ proc ::events::import {filename} {
 	set events [split $data "\n"]
 	set rowcount 0
 	foreach event $events {
-		set addSuccess [::eventsDb::addEvent [dict get $event name] [dict get $event date] [dict get $event locations] [dict get $event people] [dict get $event note] {}]
+		set addSuccess [::eventsDb::addEvent \
+			[dict get $event name] \
+			[dict get $event date] \
+			[dict get $event locations] \
+			[dict get $event people] \
+			[dict get $event note] \
+			{} \
+		]
 		if {$addSuccess} {
 			incr rowcount 1
 		}
