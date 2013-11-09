@@ -5,6 +5,7 @@ package require Tk
 source "events.tcl"
 
 set events [::events::getSummaryList]
+puts $events
 
 wm title . "Timeshlop"
 wm minsize . 400 200
@@ -15,7 +16,7 @@ grid [ttk::frame .c -padding "5 5 10 10" -relief raised] -column 0 -row 0 -stick
 grid columnconfigure . 0 -weight 1
 grid rowconfigure . 0 -weight 1
 
-grid [tk::listbox .c.eventlb -height 10 -listvariable events] -column 0 -row 0 -sticky wns
+grid [tk::listbox .c.eventlb -height 10 -listvariable events -selectmode single] -column 0 -row 0 -sticky wns
 grid columnconfigure .c 0 -weight 1
 grid rowconfigure .c 0 -weight 1
 grid [ttk::entry .c.importentry -text "File path"] -column 1 -row 0 -sticky n
@@ -25,6 +26,7 @@ grid [ttk::label .c.messages] -column 0 -row 1 -columnspan 2 -sticky ws
 grid [ttk::sizegrip .c.grip] -column 999 -row 1 -sticky se
 
 bind .c.importentry <Return> importMe
+bind .c.eventlb <<ListboxSelect>> selectEvent
 
 
 proc importMe {} {
@@ -35,4 +37,10 @@ proc importMe {} {
 	upvar events evts
 	set evts [::events::getSummaryList]
 	.c.eventlb yview moveto 1; # scroll to last item in list
+}
+
+proc selectEvent {} {
+	set index [.c.eventlb curselection]
+	upvar events evts
+	puts [lindex $evts $index]
 }
